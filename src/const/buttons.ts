@@ -1,4 +1,4 @@
-import { ConnectionButtons, ProfileButtons } from './types';
+import { ConnectionButtons, ProfileButtons } from '../types';
 
 export const PROFILE = 'Профиль 👤.';
 export const COUNTRIES_LIST = 'Список стран 🌍.';
