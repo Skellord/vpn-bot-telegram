@@ -1,0 +1,9 @@
+services:
+  vpn-bot-telegram:
+    build: .
+    ports:
+      - "8081:8081"
+    environment:
+      - PORT=8081
+      - NODE_ENV=development
+      - BOT_TOKEN=botToken

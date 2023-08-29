@@ -1,7 +1,6 @@
 import { Telegraf } from 'telegraf';
 import { message } from 'telegraf/filters';
 import 'dotenv/config'
-import { createServer } from 'http';
 
 import {
   connectionButtons,
@@ -27,6 +26,13 @@ import {
 } from './handlers';
 
 const bot = new Telegraf(process.env.BOT_TOKEN ?? '');
+const port = process.env.PORT ? Number(process.env.PORT) : 5001;
+const domain = process.env.WEBHOOK_URL ?? '';
+const launchConfig = process.env.NODE_ENV === 'production' ? { webhook: { domain, port } } : undefined;
+
+if (process.env.NODE_ENV === 'production' && process.env.WEBHOOK_URL) {
+  bot.telegram.setWebhook(process.env.WEBHOOK_URL);
+}
 
 bot.start(startHandler);
 
@@ -45,10 +51,4 @@ bot.on('pre_checkout_query', preCheckoutHandler);
 
 bot.on(message('successful_payment'), successfulPaymentHandler)
 
-bot.launch();
-
-const server = createServer();
-
-server.listen(process.env.PORT ?? 5000, () => {
-  console.log(`Server is running on port ${process.env.PORT ?? 5000}`);
-});
+bot.launch(launchConfig);
